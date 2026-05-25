@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Amnistía Tributaria MSB</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Municipalidad de San Borja</p>
+          <h1>Amnistía tributaria Jul-Ago 2026</h1>
+          <p class="subtitle">Escenario único A Realista | Corte 20/05/2026 | Matriz financiera ejecutiva</p>
+        </div>
+        <div class="top-actions">
+          <button id="printBtn" class="btn" type="button">Imprimir / PDF</button>
+          <button id="downloadBtn" class="btn primary" type="button">Descargar base CSV</button>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="Vistas del dashboard">
+        <button class="tab active" type="button" data-tab="ejecutivo">Ejecutivo</button>
+        <button class="tab" type="button" data-tab="tramos">Tramos</button>
+        <button class="tab" type="button" data-tab="conceptos">Conceptos</button>
+        <button class="tab" type="button" data-tab="fraccionamiento">Fraccionamiento</button>
+        <button class="tab" type="button" data-tab="motor">Motor</button>
+      </nav>
+
+      <section class="control-band" aria-label="Parámetros globales">
+        <label>
+          Cuotas vencidas mín.
+          <select id="minCuotas"></select>
+        </label>
+        <label>
+          Tasa fraccionamiento
+          <input id="tasaFracc" type="range" min="0" max="40" step="1" value="18" />
+          <span id="tasaFraccValue" class="control-value">18%</span>
+        </label>
+        <label>
+          Ancla predial 2026
+          <input id="anclaRate" type="range" min="50" max="100" step="1" value="90" />
+          <span id="anclaRateValue" class="control-value">90%</span>
+        </label>
+        <label>
+          Pulso natural
+          <input id="pulsoMult" type="range" min="70" max="130" step="5" value="100" />
+          <span id="pulsoMultValue" class="control-value">100%</span>
+        </label>
+        <label>
+          Acogimiento vencido
+          <input id="acogMult" type="range" min="50" max="180" step="5" value="100" />
+          <span id="acogMultValue" class="control-value">100%</span>
+        </label>
+      </section>
+
+      <main>
+        <section id="ejecutivo" class="tab-panel active">
+          <div id="kpiGrid" class="kpi-grid"></div>
+          <article class="panel executive-observations">
+            <div class="panel-head">
+              <div>
+                <h2>Observaciones gerenciales del resumen ejecutivo</h2>
+                <p>Alcance técnico de los principales indicadores del programa</p>
+              </div>
+            </div>
+            <div id="executiveObservations" class="observation-grid"></div>
+          </article>
+          <div class="grid two">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Lectura de ingreso Jul-Ago</h2>
+                  <p>Ingreso natural, ancla, beneficio e impacto de fraccionamiento</p>
+                </div>
+              </div>
+              <p id="executiveNarrative" class="executive-copy"></p>
+              <div id="waterfallChart" class="chart large"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Proyección por frente</h2>
+                  <p>Comparación de ingreso sin y con beneficio</p>
+                </div>
+              </div>
+              <div id="projectionTable" class="table-wrap"></div>
+            </article>
+          </div>
+          <div class="grid two">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Validación de fuentes</h2>
+                  <p>Controles principales del modelo</p>
+                </div>
+              </div>
+              <div id="validationTable" class="table-wrap"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Meta Jul-Dic</h2>
+                  <p>Avance esperado con campaña frente a meta pendiente</p>
+                </div>
+              </div>
+              <div id="coverageGauge" class="gauge"></div>
+            </article>
+          </div>
+          <div class="grid two">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Composición del universo cartera</h2>
+                  <p>Base acumulada del programa y ancla estricta 2026</p>
+                </div>
+              </div>
+              <div id="portfolioComposition" class="table-wrap"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Programa con alta probabilidad de éxito</h2>
+                  <p>Argumento ejecutivo para sustentar la campaña</p>
+                </div>
+              </div>
+              <div id="programPitch" class="pitch-list"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="tramos" class="tab-panel">
+          <div class="grid two">
+            <article class="panel wide">
+              <div class="panel-head">
+                <div>
+                  <h2>Recuperación por tramo de antigüedad</h2>
+                  <p>Saldo bruto, descuento fiscal e ingreso estimado</p>
+                </div>
+              </div>
+              <div id="tramoChart" class="chart large"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Foco de gestión por tramo</h2>
+                  <p>Concentración, recuperación y lectura técnica</p>
+                </div>
+              </div>
+              <div id="tramoCards" class="stack"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="conceptos" class="tab-panel">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Ranking por concepto</h2>
+                <p>Seleccione métrica para ordenar la lectura gerencial</p>
+              </div>
+              <select id="conceptMetric" class="compact-select">
+                <option value="saldoBruto">Saldo bruto</option>
+                <option value="descuento">Descuento</option>
+                <option value="recuperacion">Recuperación</option>
+                <option value="noRecuperado">No recuperado</option>
+              </select>
+            </div>
+            <div id="conceptChart" class="chart large"></div>
+          </article>
+        </section>
+
+        <section id="fraccionamiento" class="tab-panel">
+          <div class="grid two">
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Sensibilidad de fraccionamiento</h2>
+                  <p>Contratos elegibles y recuperación estimada por regla</p>
+                </div>
+              </div>
+              <div id="fraccChart" class="chart large"></div>
+            </article>
+            <article class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Contratos principales</h2>
+                  <p>Mayor saldo para gestión prioritaria</p>
+                </div>
+              </div>
+              <div id="fraccTable" class="table-wrap tall"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="motor" class="tab-panel">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Motor de cálculo</h2>
+                <p>Detalle filtrable del saldo, beneficio y recuperación</p>
+              </div>
+            </div>
+            <div class="filters">
+              <select id="tramoFilter"></select>
+              <select id="conceptFilter"></select>
+              <select id="estadoFilter"></select>
+              <input id="searchMotor" type="search" placeholder="Buscar estado, tramo o concepto" />
+            </div>
+            <div id="motorTable" class="table-wrap tall"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div id="tooltip" class="tooltip" role="status"></div>
+
+    <script src="data/amnistia-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
